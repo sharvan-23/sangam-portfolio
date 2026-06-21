@@ -1,0 +1,1213 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>Sangam Kumar — Photographer · Videographer · Visual Artist</title>
+<link rel="preconnect" href="https://fonts.googleapis.com"/>
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin/>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;1,300;1,400&family=DM+Sans:wght@300;400;500;600&family=DM+Mono:wght@300;400&display=swap" rel="stylesheet"/>
+<style>
+/* ── TOKENS ── */
+:root {
+  --ink:      #0a0a0a;
+  --ink2:     #111111;
+  --ink3:     #1a1a1a;
+  --surface:  #151515;
+  --border:   rgba(255,255,255,0.07);
+  --gold:     #c9a96e;
+  --gold2:    #e8c98a;
+  --mist:     rgba(201,169,110,0.12);
+  --text:     #e8e4dc;
+  --muted:    #6b6560;
+  --serif:    'Cormorant Garamond', Georgia, serif;
+  --sans:     'DM Sans', system-ui, sans-serif;
+  --mono:     'DM Mono', monospace;
+}
+
+/* ── RESET ── */
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+html { scroll-behavior: smooth; font-size: 16px; }
+body { background: var(--ink); color: var(--text); font-family: var(--sans); font-weight: 300; line-height: 1.7; overflow-x: hidden; }
+img { display: block; max-width: 100%; }
+a { color: inherit; text-decoration: none; }
+button, input, select, textarea { font-family: inherit; }
+
+/* ── SCROLLBAR ── */
+::-webkit-scrollbar { width: 4px; }
+::-webkit-scrollbar-track { background: var(--ink); }
+::-webkit-scrollbar-thumb { background: var(--gold); border-radius: 2px; }
+
+/* ── NAV ── */
+#nav {
+  position: fixed; top: 0; left: 0; right: 0; z-index: 100;
+  display: flex; align-items: center; justify-content: space-between;
+  padding: 0 5vw; height: 68px;
+  background: transparent;
+  border-bottom: 1px solid transparent;
+  transition: background 0.4s, border-color 0.4s;
+}
+#nav.scrolled { background: rgba(10,10,10,0.92); border-color: var(--border); backdrop-filter: blur(16px); }
+.nav-logo { font-family: var(--serif); font-size: 1.25rem; font-weight: 400; letter-spacing: 0.03em; color: var(--gold); }
+.nav-logo span { font-style: italic; font-weight: 300; color: var(--text); }
+.nav-links { display: flex; gap: 2.5rem; }
+.nav-links a { font-size: 0.78rem; letter-spacing: 0.12em; text-transform: uppercase; color: var(--muted); transition: color 0.2s; }
+.nav-links a:hover { color: var(--gold); }
+.nav-burger { display: none; flex-direction: column; gap: 5px; cursor: pointer; padding: 4px; }
+.nav-burger span { display: block; width: 24px; height: 1.5px; background: var(--text); transition: all 0.3s; }
+.mobile-menu { display: none; position: fixed; inset: 0; background: var(--ink); z-index: 99; flex-direction: column; align-items: center; justify-content: center; gap: 2.5rem; }
+.mobile-menu.open { display: flex; }
+.mobile-menu a { font-family: var(--serif); font-size: 2rem; font-weight: 300; color: var(--text); transition: color 0.2s; }
+.mobile-menu a:hover { color: var(--gold); }
+.mobile-close { position: absolute; top: 24px; right: 5vw; font-size: 2rem; color: var(--muted); cursor: pointer; background: none; border: none; }
+
+/* ── HERO ── */
+#hero {
+  position: relative; height: 100vh; min-height: 600px;
+  display: flex; align-items: center; justify-content: center;
+  overflow: hidden;
+}
+.hero-slides { position: absolute; inset: 0; }
+.hero-slide {
+  position: absolute; inset: 0;
+  opacity: 0; transition: opacity 1.4s ease;
+  background-size: cover; background-position: center;
+}
+.hero-slide.active { opacity: 1; }
+/* Gradient placeholder slides */
+.slide-1 { background: linear-gradient(135deg, #1a1008 0%, #2d1f0a 40%, #0a0a0a 100%); }
+.slide-2 { background: linear-gradient(135deg, #080d14 0%, #0f1e2d 40%, #0a0a0a 100%); }
+.slide-3 { background: linear-gradient(135deg, #140808 0%, #221010 40%, #0a0a0a 100%); }
+.slide-4 { background: linear-gradient(135deg, #080a14 0%, #0a1020 50%, #0a0a0a 100%); }
+
+/* Slide graphic overlays */
+.slide-graphic {
+  position: absolute; inset: 0;
+  display: flex; align-items: center; justify-content: center;
+}
+.slide-graphic svg { width: 60vw; max-width: 700px; height: auto; opacity: 0.15; }
+
+.hero-overlay {
+  position: absolute; inset: 0;
+  background: linear-gradient(to bottom, rgba(10,10,10,0.3) 0%, rgba(10,10,10,0.6) 60%, rgba(10,10,10,0.95) 100%);
+}
+.hero-content {
+  position: relative; z-index: 2;
+  text-align: center; max-width: 860px; padding: 0 2rem;
+}
+.hero-eyebrow {
+  font-family: var(--mono); font-size: 0.72rem; letter-spacing: 0.2em;
+  text-transform: uppercase; color: var(--gold); margin-bottom: 1.5rem;
+  display: flex; align-items: center; justify-content: center; gap: 1rem;
+}
+.hero-eyebrow::before, .hero-eyebrow::after {
+  content: ''; flex: 1; max-width: 60px; height: 1px; background: var(--gold); opacity: 0.5;
+}
+.hero-h1 {
+  font-family: var(--serif); font-size: clamp(2.4rem, 7vw, 5.5rem);
+  font-weight: 300; line-height: 1.1; letter-spacing: -0.01em;
+  color: var(--text); margin-bottom: 0.4em;
+}
+.hero-h1 em { font-style: italic; color: var(--gold2); }
+.hero-sub {
+  font-size: clamp(0.85rem, 1.8vw, 1.05rem); color: var(--muted);
+  letter-spacing: 0.06em; margin-bottom: 2.8rem;
+  text-transform: uppercase; font-weight: 400;
+}
+.hero-dots {
+  display: flex; justify-content: center; gap: 6px; margin-bottom: 2.2rem;
+}
+.hero-dot { width: 6px; height: 6px; border-radius: 50%; background: var(--muted); cursor: pointer; transition: all 0.3s; }
+.hero-dot.active { background: var(--gold); width: 24px; border-radius: 3px; }
+.hero-btns { display: flex; gap: 1rem; justify-content: center; flex-wrap: wrap; }
+.btn-primary {
+  padding: 0.85rem 2.2rem; background: var(--gold); color: var(--ink);
+  font-size: 0.82rem; font-weight: 600; letter-spacing: 0.1em; text-transform: uppercase;
+  border: none; cursor: pointer; transition: background 0.2s, transform 0.2s;
+  clip-path: polygon(8px 0%, 100% 0%, calc(100% - 8px) 100%, 0% 100%);
+}
+.btn-primary:hover { background: var(--gold2); transform: translateY(-1px); }
+.btn-outline {
+  padding: 0.85rem 2.2rem;
+  border: 1px solid rgba(201,169,110,0.4); color: var(--gold);
+  font-size: 0.82rem; font-weight: 500; letter-spacing: 0.1em; text-transform: uppercase;
+  background: transparent; cursor: pointer; transition: border-color 0.2s, background 0.2s, transform 0.2s;
+  clip-path: polygon(8px 0%, 100% 0%, calc(100% - 8px) 100%, 0% 100%);
+}
+.btn-outline:hover { border-color: var(--gold); background: var(--mist); transform: translateY(-1px); }
+.hero-scroll {
+  position: absolute; bottom: 2.5rem; left: 50%; transform: translateX(-50%);
+  display: flex; flex-direction: column; align-items: center; gap: 8px;
+  font-family: var(--mono); font-size: 0.65rem; letter-spacing: 0.2em; color: var(--muted); text-transform: uppercase;
+}
+.scroll-line { width: 1px; height: 48px; background: linear-gradient(to bottom, var(--gold), transparent); animation: scrollPulse 2s ease-in-out infinite; }
+@keyframes scrollPulse { 0%,100%{opacity:0.3;transform:scaleY(0.6)} 50%{opacity:1;transform:scaleY(1)} }
+
+/* ── SECTION BASE ── */
+.section { padding: 8rem 5vw; }
+.section-eyebrow {
+  font-family: var(--mono); font-size: 0.68rem; letter-spacing: 0.22em;
+  text-transform: uppercase; color: var(--gold); margin-bottom: 1rem;
+}
+.section-title {
+  font-family: var(--serif); font-size: clamp(2rem, 4vw, 3.4rem);
+  font-weight: 300; line-height: 1.15; color: var(--text);
+}
+.section-title em { font-style: italic; color: var(--gold2); }
+.divider { width: 48px; height: 1px; background: var(--gold); margin: 1.6rem 0; opacity: 0.7; }
+
+/* ── ABOUT ── */
+#about { background: var(--ink2); }
+.about-grid {
+  display: grid; grid-template-columns: 1fr 1.6fr; gap: 6rem;
+  align-items: center; max-width: 1100px; margin: 0 auto;
+}
+.about-img-wrap {
+  position: relative;
+  width: 100%;
+  max-width: 340px;
+  min-width: 280px;
+  margin: 0 auto;
+}
+.about-img-frame {
+  width: 100%;
+  min-width: 280px;
+  min-height: 320px;
+  aspect-ratio: 3/4;
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 6px;
+  overflow: hidden;
+  position: relative;
+  box-shadow: 0 30px 70px -20px rgba(0,0,0,0.65), 0 0 0 1px rgba(201,169,110,0.06);
+  transition: box-shadow 0.4s ease, transform 0.4s ease;
+}
+.about-img-frame:hover {
+  box-shadow: 0 40px 90px -18px rgba(0,0,0,0.7), 0 0 0 1px rgba(201,169,110,0.14);
+  transform: translateY(-4px);
+}
+.about-img-frame img { width: 100%; height: 100%; object-fit: cover; }
+.about-img-placeholder {
+  width: 100%; height: 100%;
+  display: flex; flex-direction: column; align-items: center; justify-content: center;
+  background: linear-gradient(145deg, #14110a 0%, #1f1709 55%, #100d08 100%);
+  gap: 1.2rem;
+}
+.about-img-placeholder svg { opacity: 0.3; width: 96px; height: 96px; }
+.about-corner {
+  position: absolute; width: 44px; height: 44px; border-color: var(--gold); border-style: solid; opacity: 0.7;
+  z-index: 2; pointer-events: none;
+}
+.about-corner.tl { top: -11px; left: -11px; border-width: 2px 0 0 2px; }
+.about-corner.br { bottom: -11px; right: -11px; border-width: 0 2px 2px 0; }
+.about-badge {
+  position: absolute; bottom: -1.6rem; right: -1.6rem;
+  width: 108px; height: 108px; background: var(--gold); border-radius: 50%;
+  display: flex; flex-direction: column; align-items: center; justify-content: center;
+  color: var(--ink); line-height: 1.2; z-index: 3;
+  box-shadow: 0 16px 40px -10px rgba(201,169,110,0.55), 0 0 0 6px var(--ink2);
+}
+.about-badge strong { font-size: 1.8rem; font-family: var(--serif); font-weight: 600; }
+.about-badge small { font-size: 0.58rem; text-transform: uppercase; letter-spacing: 0.1em; font-weight: 600; }
+.about-text p { color: rgba(232,228,220,0.7); font-size: 1.05rem; line-height: 1.85; margin-bottom: 1.4rem; }
+.about-stats {
+  display: grid; grid-template-columns: repeat(3,1fr); gap: 1.5rem;
+  margin-top: 2.5rem; padding-top: 2.5rem; border-top: 1px solid var(--border);
+}
+.about-stat strong { display: block; font-family: var(--serif); font-size: 2.2rem; font-weight: 300; color: var(--gold); }
+.about-stat span { font-size: 0.75rem; color: var(--muted); letter-spacing: 0.08em; text-transform: uppercase; }
+.about-skills { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 2rem; }
+.skill-tag {
+  padding: 6px 14px; border: 1px solid var(--border); font-size: 0.72rem;
+  letter-spacing: 0.1em; text-transform: uppercase; color: var(--muted);
+  transition: border-color 0.2s, color 0.2s;
+}
+.skill-tag:hover { border-color: var(--gold); color: var(--gold); }
+
+/* ── PORTFOLIO ── */
+#portfolio { background: var(--ink); }
+.portfolio-header { text-align: center; margin-bottom: 3.5rem; }
+.portfolio-tabs {
+  display: flex; justify-content: center; gap: 0; margin: 2.5rem auto 3rem;
+  border: 1px solid var(--border); width: fit-content;
+}
+.ptab {
+  padding: 0.7rem 2rem; background: transparent; border: none; cursor: pointer;
+  font-family: var(--sans); font-size: 0.78rem; letter-spacing: 0.12em;
+  text-transform: uppercase; color: var(--muted); transition: all 0.2s;
+  position: relative;
+}
+.ptab + .ptab { border-left: 1px solid var(--border); }
+.ptab.active { background: var(--gold); color: var(--ink); font-weight: 600; }
+.ptab:not(.active):hover { color: var(--gold); }
+.portfolio-panel { display: none; }
+.portfolio-panel.active { display: block; }
+.filter-bar { display: flex; gap: 1rem; flex-wrap: wrap; margin-bottom: 2.5rem; justify-content: center; }
+.filter-btn {
+  padding: 5px 16px; background: transparent; border: 1px solid var(--border);
+  font-size: 0.72rem; letter-spacing: 0.1em; text-transform: uppercase;
+  color: var(--muted); cursor: pointer; transition: all 0.2s; border-radius: 2px;
+}
+.filter-btn.active, .filter-btn:hover { border-color: var(--gold); color: var(--gold); }
+.portfolio-grid {
+  display: grid; gap: 3px;
+  grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+}
+.portfolio-grid.masonry-3 { grid-template-columns: repeat(3, 1fr); }
+.p-item {
+  position: relative; overflow: hidden; cursor: pointer;
+  background: var(--surface); aspect-ratio: 4/3;
+}
+.p-item.tall { aspect-ratio: 3/4; }
+.p-item.wide { grid-column: span 2; aspect-ratio: 16/9; }
+.p-item-inner {
+  width: 100%; height: 100%;
+  display: flex; align-items: center; justify-content: center;
+  transition: transform 0.5s ease;
+}
+.p-item:hover .p-item-inner { transform: scale(1.05); }
+.p-item-overlay {
+  position: absolute; inset: 0;
+  background: linear-gradient(to top, rgba(0,0,0,0.85) 0%, transparent 50%);
+  opacity: 0; transition: opacity 0.3s;
+  display: flex; flex-direction: column; justify-content: flex-end; padding: 1.5rem;
+}
+.p-item:hover .p-item-overlay { opacity: 1; }
+.p-item-overlay h4 { font-family: var(--serif); font-size: 1.1rem; font-weight: 400; margin-bottom: 0.3rem; }
+.p-item-overlay span { font-size: 0.68rem; letter-spacing: 0.12em; color: var(--gold); text-transform: uppercase; }
+.p-placeholder {
+  width: 100%; height: 100%; position: absolute; inset: 0;
+  display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 12px;
+}
+.p-placeholder .p-icon { opacity: 0.15; }
+.p-placeholder .p-label {
+  font-family: var(--mono); font-size: 0.6rem; letter-spacing: 0.2em;
+  text-transform: uppercase; color: var(--muted); text-align: center; padding: 0 1rem;
+}
+
+/* Gradient placeholders for portfolio items */
+.grad-p1 { background: linear-gradient(135deg, #1a0f05 0%, #2a1a08 50%, #111 100%); }
+.grad-p2 { background: linear-gradient(135deg, #050a14 0%, #0a1428 50%, #111 100%); }
+.grad-p3 { background: linear-gradient(135deg, #0a0f05 0%, #141f08 50%, #111 100%); }
+.grad-p4 { background: linear-gradient(135deg, #14050a 0%, #280a14 50%, #111 100%); }
+.grad-p5 { background: linear-gradient(135deg, #05100a 0%, #081a10 50%, #111 100%); }
+.grad-p6 { background: linear-gradient(135deg, #100a05 0%, #1e140a 50%, #111 100%); }
+.grad-v1 { background: linear-gradient(135deg, #050814 0%, #080f20 50%, #111 100%); }
+.grad-v2 { background: linear-gradient(135deg, #140508 0%, #20080d 50%, #111 100%); }
+.grad-v3 { background: linear-gradient(135deg, #05140a 0%, #082014 50%, #111 100%); }
+.grad-a1 { background: linear-gradient(135deg, #140505 0%, #200808 50%, #111 100%); }
+.grad-a2 { background: linear-gradient(135deg, #051414 0%, #082020 50%, #111 100%); }
+.grad-a3 { background: linear-gradient(135deg, #141405 0%, #202008 50%, #111 100%); }
+
+/* ── SOCIAL HUB ── */
+#social { background: var(--ink2); padding: 7rem 5vw; }
+.social-header { text-align: center; margin-bottom: 4rem; }
+.social-grid {
+  display: grid; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+  gap: 1.5px; max-width: 1000px; margin: 0 auto;
+  border: 1.5px solid var(--border);
+}
+.social-card {
+  background: var(--ink); padding: 2.8rem 2.2rem;
+  display: flex; flex-direction: column; align-items: flex-start; gap: 1.2rem;
+  transition: background 0.3s; border: 1px solid transparent;
+}
+.social-card:hover { background: var(--surface); border-color: var(--gold); }
+.social-icon {
+  width: 52px; height: 52px; border: 1px solid var(--border); border-radius: 12px;
+  display: flex; align-items: center; justify-content: center;
+  transition: border-color 0.3s, background 0.3s;
+}
+.social-card:hover .social-icon { border-color: var(--gold); background: var(--mist); }
+.social-card h3 { font-family: var(--serif); font-size: 1.15rem; font-weight: 400; }
+.social-card p { font-size: 0.8rem; color: var(--muted); line-height: 1.6; flex: 1; }
+.social-handle {
+  font-family: var(--mono); font-size: 0.72rem; color: var(--gold);
+  letter-spacing: 0.05em; display: flex; align-items: center; gap: 6px;
+}
+.social-handle::before { content: '@'; opacity: 0.5; }
+.social-link-btn {
+  margin-top: auto; padding: 0.55rem 1.3rem; border: 1px solid var(--border);
+  background: transparent; color: var(--muted); font-size: 0.72rem;
+  letter-spacing: 0.1em; text-transform: uppercase; cursor: pointer;
+  transition: all 0.2s; display: inline-flex; align-items: center; gap: 6px;
+}
+.social-card:hover .social-link-btn { border-color: var(--gold); color: var(--gold); }
+
+/* ── SERVICES ── */
+#services { background: var(--ink); }
+.services-header { text-align: center; margin-bottom: 4rem; }
+.services-grid {
+  display: grid; grid-template-columns: repeat(auto-fit, minmax(230px, 1fr));
+  gap: 1.5px; margin-bottom: 6rem;
+  border: 1px solid var(--border);
+}
+.service-card {
+  background: var(--ink); padding: 2.8rem 2.2rem;
+  position: relative; overflow: hidden; transition: background 0.3s;
+}
+.service-card::before {
+  content: ''; position: absolute; top: 0; left: 0; right: 0; height: 1.5px;
+  background: linear-gradient(90deg, transparent, var(--gold), transparent);
+  transform: scaleX(0); transition: transform 0.4s;
+}
+.service-card:hover { background: var(--surface); }
+.service-card:hover::before { transform: scaleX(1); }
+.service-num {
+  font-family: var(--serif); font-size: 4rem; font-weight: 300;
+  color: rgba(201,169,110,0.08); line-height: 1; margin-bottom: 1.5rem;
+  position: absolute; top: 1rem; right: 1.5rem;
+}
+.service-icon { margin-bottom: 1.5rem; }
+.service-card h3 { font-family: var(--serif); font-size: 1.3rem; font-weight: 400; margin-bottom: 0.8rem; }
+.service-card p { font-size: 0.85rem; color: var(--muted); line-height: 1.75; }
+.service-tags { display: flex; flex-wrap: wrap; gap: 6px; margin-top: 1.2rem; }
+.service-tag { font-size: 0.65rem; padding: 3px 10px; background: var(--mist); color: var(--gold); border-radius: 2px; letter-spacing: 0.1em; text-transform: uppercase; }
+
+/* ── CONTACT ── */
+#contact { background: var(--ink3); }
+.contact-grid {
+  display: grid; grid-template-columns: 1fr 1.5fr; gap: 6rem;
+  max-width: 1100px; margin: 0 auto; align-items: start;
+}
+.contact-info { padding-top: 0.5rem; }
+.contact-info p { color: rgba(232,228,220,0.65); font-size: 0.95rem; line-height: 1.85; margin-bottom: 2.5rem; }
+.contact-detail {
+  display: flex; align-items: flex-start; gap: 1rem;
+  padding: 1.2rem 0; border-bottom: 1px solid var(--border);
+}
+.contact-detail:first-of-type { border-top: 1px solid var(--border); }
+.contact-detail svg { flex-shrink: 0; margin-top: 2px; }
+.contact-detail div strong { display: block; font-size: 0.7rem; letter-spacing: 0.15em; text-transform: uppercase; color: var(--muted); margin-bottom: 4px; }
+.contact-detail div a { font-size: 0.95rem; color: var(--text); transition: color 0.2s; }
+.contact-detail div a:hover { color: var(--gold); }
+.whatsapp-btn {
+  display: inline-flex; align-items: center; gap: 10px;
+  margin-top: 2rem; padding: 0.85rem 2rem;
+  background: #25d366; color: #fff; border: none; cursor: pointer;
+  font-size: 0.82rem; font-weight: 600; letter-spacing: 0.08em; text-transform: uppercase;
+  transition: background 0.2s, transform 0.2s;
+}
+.whatsapp-btn:hover { background: #1ebe5d; transform: translateY(-1px); }
+
+/* ── FORM ── */
+.contact-form { background: var(--surface); padding: 3rem; border: 1px solid var(--border); }
+.form-title { font-family: var(--serif); font-size: 1.5rem; font-weight: 400; margin-bottom: 2rem; }
+.form-row { display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; }
+.form-group { margin-bottom: 1.2rem; }
+.form-label {
+  display: block; font-size: 0.68rem; letter-spacing: 0.15em;
+  text-transform: uppercase; color: var(--muted); margin-bottom: 8px;
+}
+.form-control {
+  width: 100%; padding: 0.8rem 1rem;
+  background: var(--ink); border: 1px solid var(--border);
+  color: var(--text); font-size: 0.9rem; outline: none;
+  transition: border-color 0.2s;
+  font-family: var(--sans);
+}
+.form-control:focus { border-color: var(--gold); }
+.form-control::placeholder { color: rgba(107,101,96,0.6); }
+select.form-control { cursor: pointer; appearance: none; }
+textarea.form-control { resize: vertical; min-height: 110px; }
+.form-submit {
+  width: 100%; padding: 1rem; background: var(--gold); color: var(--ink);
+  border: none; font-size: 0.82rem; font-weight: 700; letter-spacing: 0.15em;
+  text-transform: uppercase; cursor: pointer; margin-top: 0.5rem;
+  transition: background 0.2s, transform 0.2s;
+  display: flex; align-items: center; justify-content: center; gap: 8px;
+}
+.form-submit:hover { background: var(--gold2); transform: translateY(-1px); }
+.form-note { font-size: 0.72rem; color: var(--muted); margin-top: 0.8rem; text-align: center; }
+.form-success {
+  display: none; padding: 1rem; background: rgba(37,211,102,0.1);
+  border: 1px solid rgba(37,211,102,0.3); color: #4ade80;
+  font-size: 0.85rem; margin-top: 1rem; text-align: center;
+}
+
+/* ── LIGHTBOX ── */
+#lightbox {
+  display: none; position: fixed; inset: 0; z-index: 200;
+  background: rgba(0,0,0,0.96); align-items: center; justify-content: center;
+}
+#lightbox.open { display: flex; }
+.lb-content {
+  position: relative; max-width: 90vw; max-height: 90vh;
+  display: flex; flex-direction: column; align-items: center; gap: 1rem;
+}
+.lb-img {
+  max-width: 80vw; max-height: 75vh; object-fit: contain;
+  border: 1px solid var(--border);
+}
+.lb-placeholder {
+  width: min(700px, 85vw); height: min(500px, 60vh);
+  display: flex; flex-direction: column; align-items: center; justify-content: center;
+  gap: 1.2rem; border: 1px solid var(--border);
+}
+.lb-title { font-family: var(--serif); font-size: 1.3rem; font-weight: 300; color: var(--text); }
+.lb-cat { font-family: var(--mono); font-size: 0.7rem; letter-spacing: 0.2em; color: var(--gold); text-transform: uppercase; }
+.lb-close {
+  position: absolute; top: -3rem; right: 0; background: none; border: none;
+  color: var(--muted); font-size: 1.8rem; cursor: pointer; transition: color 0.2s;
+  line-height: 1;
+}
+.lb-close:hover { color: var(--text); }
+.lb-nav {
+  display: flex; gap: 1rem; margin-top: 0.5rem;
+}
+.lb-nav button {
+  padding: 0.5rem 1.5rem; background: transparent; border: 1px solid var(--border);
+  color: var(--muted); cursor: pointer; font-size: 0.8rem; letter-spacing: 0.1em; text-transform: uppercase;
+  transition: all 0.2s;
+}
+.lb-nav button:hover { border-color: var(--gold); color: var(--gold); }
+
+/* ── FOOTER ── */
+footer {
+  background: #060606; padding: 4rem 5vw 3rem;
+  border-top: 1px solid var(--border);
+}
+.footer-inner {
+  max-width: 1100px; margin: 0 auto;
+  display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 3rem;
+  margin-bottom: 3rem;
+}
+.footer-brand .brand-name { font-family: var(--serif); font-size: 1.5rem; font-weight: 300; color: var(--gold); margin-bottom: 0.8rem; }
+.footer-brand p { font-size: 0.82rem; color: var(--muted); line-height: 1.7; max-width: 240px; }
+.footer-col h4 { font-size: 0.7rem; letter-spacing: 0.2em; text-transform: uppercase; color: var(--muted); margin-bottom: 1.2rem; }
+.footer-col ul { list-style: none; display: flex; flex-direction: column; gap: 0.7rem; }
+.footer-col ul li a { font-size: 0.88rem; color: rgba(232,228,220,0.5); transition: color 0.2s; }
+.footer-col ul li a:hover { color: var(--gold); }
+.footer-bottom {
+  max-width: 1100px; margin: 0 auto;
+  padding-top: 2rem; border-top: 1px solid var(--border);
+  display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 1rem;
+}
+.footer-bottom p { font-size: 0.75rem; color: var(--muted); }
+.footer-social { display: flex; gap: 1rem; }
+.footer-social a {
+  width: 36px; height: 36px; border: 1px solid var(--border);
+  display: flex; align-items: center; justify-content: center;
+  color: var(--muted); font-size: 14px; transition: all 0.2s;
+}
+.footer-social a:hover { border-color: var(--gold); color: var(--gold); }
+
+/* ── REVEAL ANIMATIONS ── */
+.reveal { opacity: 0; transform: translateY(28px); transition: opacity 0.7s ease, transform 0.7s ease; }
+.reveal.visible { opacity: 1; transform: none; }
+.reveal-delay-1 { transition-delay: 0.1s; }
+.reveal-delay-2 { transition-delay: 0.2s; }
+.reveal-delay-3 { transition-delay: 0.3s; }
+.reveal-delay-4 { transition-delay: 0.4s; }
+
+/* ── RESPONSIVE ── */
+@media (max-width: 900px) {
+  .about-grid { grid-template-columns: 1fr; gap: 3rem; }
+  .about-img-wrap { max-width: 320px; margin: 0 auto; }
+  .contact-grid { grid-template-columns: 1fr; gap: 3rem; }
+  .footer-inner { grid-template-columns: 1fr 1fr; }
+  .portfolio-grid.masonry-3 { grid-template-columns: repeat(2, 1fr); }
+  .p-item.wide { grid-column: span 2; }
+}
+@media (max-width: 640px) {
+  .nav-links { display: none; }
+  .nav-burger { display: flex; }
+  .section { padding: 5rem 1.3rem; }
+  .hero-h1 { font-size: 2.2rem; }
+  .form-row { grid-template-columns: 1fr; }
+  .portfolio-grid.masonry-3 { grid-template-columns: 1fr; }
+  .p-item.wide { grid-column: span 1; aspect-ratio: 4/3; }
+  .footer-inner { grid-template-columns: 1fr; gap: 2rem; }
+  .footer-bottom { flex-direction: column; text-align: center; }
+  .portfolio-tabs { flex-direction: column; width: 100%; }
+  .ptab + .ptab { border-left: none; border-top: 1px solid var(--border); }
+  .about-img-wrap { max-width: 280px; min-width: 0; }
+  .about-img-frame { min-width: 0; min-height: 280px; }
+  .about-badge { width: 84px; height: 84px; right: -0.8rem; bottom: -1rem; }
+  .about-badge strong { font-size: 1.35rem; }
+  .contact-form { padding: 2rem 1.5rem; }
+  .social-grid { grid-template-columns: 1fr; }
+}
+</style>
+</head>
+<body>
+
+<!-- ── NAV ── -->
+<nav id="nav">
+  <div class="nav-logo">Sangam <span>Kumar</span></div>
+  <div class="nav-links">
+    <a href="#about">About</a>
+    <a href="#portfolio">Portfolio</a>
+    <a href="#social">Social</a>
+    <a href="#services">Services</a>
+    <a href="#contact">Contact</a>
+  </div>
+  <div class="nav-burger" id="navBurger" onclick="openMenu()">
+    <span></span><span></span><span></span>
+  </div>
+</nav>
+
+<!-- Mobile Menu -->
+<div class="mobile-menu" id="mobileMenu">
+  <button class="mobile-close" onclick="closeMenu()">×</button>
+  <a href="#about" onclick="closeMenu()">About</a>
+  <a href="#portfolio" onclick="closeMenu()">Portfolio</a>
+  <a href="#social" onclick="closeMenu()">Social</a>
+  <a href="#services" onclick="closeMenu()">Services</a>
+  <a href="#contact" onclick="closeMenu()">Contact</a>
+</div>
+
+<!-- ── HERO ── -->
+<section id="hero">
+  <div class="hero-slides">
+
+    <!-- Slide 1: Photography mood -->
+    <div class="hero-slide slide-1 active">
+      <div class="slide-graphic">
+        <svg viewBox="0 0 800 500" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <rect x="150" y="80" width="500" height="340" rx="4" stroke="#c9a96e" stroke-width="1.5"/>
+          <circle cx="400" cy="250" r="120" stroke="#c9a96e" stroke-width="1.5"/>
+          <circle cx="400" cy="250" r="80" stroke="#c9a96e" stroke-width="0.8"/>
+          <circle cx="400" cy="250" r="20" fill="#c9a96e" opacity="0.3"/>
+          <line x1="150" y1="140" x2="650" y2="140" stroke="#c9a96e" stroke-width="0.5" opacity="0.4"/>
+          <rect x="170" y="90" width="60" height="40" rx="2" stroke="#c9a96e" stroke-width="0.8" opacity="0.5"/>
+          <circle cx="200" cy="110" r="10" stroke="#c9a96e" stroke-width="0.8" opacity="0.5"/>
+        </svg>
+      </div>
+    </div>
+
+    <!-- Slide 2: Cinematic mood -->
+    <div class="hero-slide slide-2">
+      <div class="slide-graphic">
+        <svg viewBox="0 0 800 500" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <rect x="80" y="120" width="640" height="260" rx="2" stroke="#c9a96e" stroke-width="1.5"/>
+          <line x1="80" y1="145" x2="720" y2="145" stroke="#c9a96e" stroke-width="0.6" opacity="0.5"/>
+          <line x1="80" y1="355" x2="720" y2="355" stroke="#c9a96e" stroke-width="0.6" opacity="0.5"/>
+          <polygon points="340,180 340,320 480,250" stroke="#c9a96e" stroke-width="1.5" fill="#c9a96e" opacity="0.1"/>
+          <rect x="100" y="125" width="30" height="15" fill="#c9a96e" opacity="0.3"/>
+          <rect x="140" y="125" width="30" height="15" fill="#c9a96e" opacity="0.3"/>
+          <rect x="180" y="125" width="30" height="15" fill="#c9a96e" opacity="0.3"/>
+        </svg>
+      </div>
+    </div>
+
+    <!-- Slide 3: Art mood -->
+    <div class="hero-slide slide-3">
+      <div class="slide-graphic">
+        <svg viewBox="0 0 800 500" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <path d="M200,400 Q250,100 400,250 Q550,400 600,100" stroke="#c9a96e" stroke-width="1.5" fill="none"/>
+          <path d="M150,300 Q300,150 400,250 Q500,350 650,200" stroke="#c9a96e" stroke-width="0.8" fill="none" opacity="0.5"/>
+          <circle cx="200" cy="400" r="8" fill="#c9a96e" opacity="0.4"/>
+          <circle cx="400" cy="250" r="8" fill="#c9a96e" opacity="0.6"/>
+          <circle cx="600" cy="100" r="8" fill="#c9a96e" opacity="0.4"/>
+          <path d="M350,80 L380,200 L420,200 L450,80 Z" stroke="#c9a96e" stroke-width="1" fill="none" opacity="0.3"/>
+        </svg>
+      </div>
+    </div>
+
+    <!-- Slide 4: Social/Digital -->
+    <div class="hero-slide slide-4">
+      <div class="slide-graphic">
+        <svg viewBox="0 0 800 500" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <rect x="220" y="80" width="360" height="340" rx="30" stroke="#c9a96e" stroke-width="1.5"/>
+          <rect x="240" y="130" width="320" height="200" rx="4" stroke="#c9a96e" stroke-width="0.8"/>
+          <circle cx="400" cy="375" r="18" stroke="#c9a96e" stroke-width="1.5"/>
+          <rect x="360" y="100" width="80" height="6" rx="3" fill="#c9a96e" opacity="0.3"/>
+          <line x1="260" y1="345" x2="380" y2="345" stroke="#c9a96e" stroke-width="0.8" opacity="0.5"/>
+          <line x1="260" y1="360" x2="340" y2="360" stroke="#c9a96e" stroke-width="0.8" opacity="0.3"/>
+        </svg>
+      </div>
+    </div>
+  </div>
+
+  <div class="hero-overlay"></div>
+
+  <div class="hero-content">
+    <div class="hero-eyebrow">Based in Muzaffarnagar, UP</div>
+    <h1 class="hero-h1">
+      Capturing Moments,<br/>
+      <em>Framing Stories</em>,<br/>
+      Creating Art.
+    </h1>
+    <p class="hero-sub">Professional Photographer &nbsp;·&nbsp; Cinematic Videographer &nbsp;·&nbsp; Visual Artist</p>
+    <div class="hero-dots">
+      <div class="hero-dot active" onclick="goToSlide(0)"></div>
+      <div class="hero-dot" onclick="goToSlide(1)"></div>
+      <div class="hero-dot" onclick="goToSlide(2)"></div>
+      <div class="hero-dot" onclick="goToSlide(3)"></div>
+    </div>
+    <div class="hero-btns">
+      <button class="btn-primary" onclick="document.getElementById('portfolio').scrollIntoView({behavior:'smooth'})">View My Work</button>
+      <button class="btn-outline" onclick="document.getElementById('contact').scrollIntoView({behavior:'smooth'})">Hire Me / Contact</button>
+    </div>
+  </div>
+
+  <div class="hero-scroll">
+    <div class="scroll-line"></div>
+    Scroll
+  </div>
+</section>
+
+<!-- ── ABOUT ── -->
+<section id="about" class="section">
+  <div class="about-grid" style="max-width:1100px;margin:0 auto;">
+    <div class="about-img-wrap reveal">
+      <div class="about-img-frame">
+        <!-- Replace the img src below with the actual photo path -->
+        <!-- <img src="assets/profile/sangam-kumar.jpg" alt="Sangam Kumar" style="width:100%;height:100%;object-fit:cover;"> -->
+        <div class="about-img-placeholder">
+          <svg width="80" height="80" viewBox="0 0 80 80" fill="none">
+            <rect x="10" y="10" width="60" height="60" rx="4" stroke="#c9a96e" stroke-width="1.5"/>
+            <circle cx="40" cy="35" r="12" stroke="#c9a96e" stroke-width="1.5"/>
+            <path d="M15 70 Q40 50 65 70" stroke="#c9a96e" stroke-width="1.5" fill="none"/>
+            <circle cx="60" cy="22" r="5" stroke="#c9a96e" stroke-width="1.2"/>
+            <path d="M57 22 L63 22 M60 19 L60 25" stroke="#c9a96e" stroke-width="1"/>
+          </svg>
+        </div>
+        <div class="about-corner tl"></div>
+        <div class="about-corner br"></div>
+      </div>
+      <div class="about-badge">
+        <strong>5+</strong>
+        <small>Yrs Exp</small>
+      </div>
+    </div>
+
+    <div class="about-text">
+      <div class="section-eyebrow reveal">About the Creator</div>
+      <h2 class="section-title reveal reveal-delay-1">The Eye Behind<br/><em>Every Frame</em></h2>
+      <div class="divider reveal reveal-delay-2"></div>
+      <p class="reveal reveal-delay-2">Sangam Kumar is a seasoned creative professional who heads the entire photography and videography wing at SRGC. He professionally manages the complete social media presence for SRGC, ensuring high-impact visual storytelling across every platform.</p>
+      <p class="reveal reveal-delay-3">With a solid educational background and years of hands-on experience, Sangam blends technical expertise with artistic vision to deliver premium content — from cinematic reels and event photography to original artworks and digital campaigns.</p>
+
+      <div class="about-stats reveal reveal-delay-3">
+        <div class="about-stat"><strong>500+</strong><span>Projects Delivered</span></div>
+        <div class="about-stat"><strong>4</strong><span>Social Pages Managed</span></div>
+        <div class="about-stat"><strong>∞</strong><span>Creative Vision</span></div>
+      </div>
+
+      <div class="about-skills reveal reveal-delay-4">
+        <span class="skill-tag">Photography</span>
+        <span class="skill-tag">Cinematography</span>
+        <span class="skill-tag">Visual Art</span>
+        <span class="skill-tag">Sketching</span>
+        <span class="skill-tag">Social Media</span>
+        <span class="skill-tag">Video Editing</span>
+        <span class="skill-tag">Content Strategy</span>
+        <span class="skill-tag">SRGC Media Head</span>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ── PORTFOLIO ── -->
+<section id="portfolio" class="section">
+  <div class="portfolio-header reveal">
+    <div class="section-eyebrow">Portfolio</div>
+    <h2 class="section-title">Selected <em>Works</em></h2>
+    <p style="color:var(--muted);font-size:0.9rem;margin-top:1rem;max-width:500px;margin-left:auto;margin-right:auto;">Click any item to open in full screen.</p>
+  </div>
+
+  <div class="portfolio-tabs reveal">
+    <button class="ptab active" onclick="switchTab('photography', this)">Photography</button>
+    <button class="ptab" onclick="switchTab('videography', this)">Videography</button>
+    <button class="ptab" onclick="switchTab('art', this)">Art & Drawing</button>
+  </div>
+
+  <!-- PHOTOGRAPHY -->
+  <div class="portfolio-panel active" id="panel-photography">
+    <div class="filter-bar">
+      <button class="filter-btn active" onclick="filterItems(this, 'photography', 'all')">All</button>
+      <button class="filter-btn" onclick="filterItems(this, 'photography', 'portraits')">Portraits</button>
+      <button class="filter-btn" onclick="filterItems(this, 'photography', 'events')">Events</button>
+      <button class="filter-btn" onclick="filterItems(this, 'photography', 'street')">Street</button>
+      <button class="filter-btn" onclick="filterItems(this, 'photography', 'creative')">Creative</button>
+    </div>
+    <div class="portfolio-grid masonry-3" id="grid-photography"></div>
+  </div>
+
+  <!-- VIDEOGRAPHY -->
+  <div class="portfolio-panel" id="panel-videography">
+    <div class="filter-bar">
+      <button class="filter-btn active" onclick="filterItems(this, 'videography', 'all')">All</button>
+      <button class="filter-btn" onclick="filterItems(this, 'videography', 'reels')">Cinematic Reels</button>
+      <button class="filter-btn" onclick="filterItems(this, 'videography', 'films')">Short Films</button>
+      <button class="filter-btn" onclick="filterItems(this, 'videography', 'commercial')">Commercial</button>
+    </div>
+    <div class="portfolio-grid masonry-3" id="grid-videography"></div>
+  </div>
+
+  <!-- ART & DRAWING -->
+  <div class="portfolio-panel" id="panel-art">
+    <div class="filter-bar">
+      <button class="filter-btn active" onclick="filterItems(this, 'art', 'all')">All</button>
+      <button class="filter-btn" onclick="filterItems(this, 'art', 'sketches')">Sketches</button>
+      <button class="filter-btn" onclick="filterItems(this, 'art', 'digital')">Digital Art</button>
+      <button class="filter-btn" onclick="filterItems(this, 'art', 'traditional')">Traditional</button>
+    </div>
+    <div class="portfolio-grid masonry-3" id="grid-art"></div>
+  </div>
+</section>
+
+<!-- ── SOCIAL HUB ── -->
+<section id="social">
+  <div class="social-header reveal">
+    <div class="section-eyebrow">Social Presence</div>
+    <h2 class="section-title">Find Me <em>Across Platforms</em></h2>
+    <p style="color:var(--muted);font-size:0.9rem;margin-top:1rem;">Four specialized accounts, one vision.</p>
+  </div>
+  <div class="social-grid">
+    <!-- Photography Instagram -->
+    <div class="social-card reveal">
+      <div class="social-icon">
+        <svg width="24" height="24" viewBox="0 0 24 24" fill="none">
+          <rect x="2" y="2" width="20" height="20" rx="5" stroke="#c9a96e" stroke-width="1.4"/>
+          <circle cx="12" cy="12" r="4.5" stroke="#c9a96e" stroke-width="1.4"/>
+          <circle cx="17.5" cy="6.5" r="1.2" fill="#c9a96e"/>
+        </svg>
+      </div>
+      <h3>Photography Page</h3>
+      <p>Professional photography — portraits, events, street captures, and creative shoots.</p>
+      <div class="social-handle">photography_sang91</div>
+      <a href="https://www.instagram.com/photography_sang91/" target="_blank" rel="noopener" class="social-link-btn">
+        Open Instagram →
+      </a>
+    </div>
+
+    <!-- Art Instagram -->
+    <div class="social-card reveal reveal-delay-1">
+      <div class="social-icon">
+        <svg width="24" height="24" viewBox="0 0 24 24" fill="none">
+          <path d="M18 6 L20 8 L9 19 L5 20 L6 16 Z" stroke="#c9a96e" stroke-width="1.4" fill="none"/>
+          <path d="M16 8 L18 10" stroke="#c9a96e" stroke-width="1.2"/>
+        </svg>
+      </div>
+      <h3>Art & Sketches</h3>
+      <p>Original artworks — pencil sketches, charcoal, digital art, and traditional paintings.</p>
+      <div class="social-handle">sangam_arts91</div>
+      <a href="https://www.instagram.com/sangam_arts91/" target="_blank" rel="noopener" class="social-link-btn">
+        Open Instagram →
+      </a>
+    </div>
+
+    <!-- Cinematic Instagram -->
+    <div class="social-card reveal reveal-delay-2">
+      <div class="social-icon">
+        <svg width="24" height="24" viewBox="0 0 24 24" fill="none">
+          <rect x="2" y="5" width="15" height="14" rx="2" stroke="#c9a96e" stroke-width="1.4"/>
+          <path d="M17 9 L22 6 L22 18 L17 15" stroke="#c9a96e" stroke-width="1.4" fill="none"/>
+        </svg>
+      </div>
+      <h3>Cinematic Videography</h3>
+      <p>Cinematic reels, short films, event coverage, and commercial video production.</p>
+      <div class="social-handle">sam_cinematic500</div>
+      <a href="https://www.instagram.com/sam_cinematic500/" target="_blank" rel="noopener" class="social-link-btn">
+        Open Instagram →
+      </a>
+    </div>
+
+    <!-- YouTube -->
+    <div class="social-card reveal reveal-delay-3">
+      <div class="social-icon">
+        <svg width="24" height="24" viewBox="0 0 24 24" fill="none">
+          <rect x="2" y="5" width="20" height="14" rx="3" stroke="#c9a96e" stroke-width="1.4"/>
+          <polygon points="10,9 10,15 16,12" stroke="#c9a96e" stroke-width="1.2" fill="#c9a96e" opacity="0.3"/>
+        </svg>
+      </div>
+      <h3>YouTube Channel</h3>
+      <p>Full-length cinematic videos, behind-the-scenes, tutorials, and college productions.</p>
+      <div class="social-handle" style="letter-spacing:0.02em;font-size:0.65rem;">Sam Cinematic</div>
+      <a href="https://www.youtube.com/channel/UC7FCWFint2FsZdB9u-MiMUQ" target="_blank" rel="noopener" class="social-link-btn">
+        Open YouTube →
+      </a>
+    </div>
+  </div>
+</section>
+
+<!-- ── SERVICES ── -->
+<section id="services" class="section">
+  <div class="services-header reveal">
+    <div class="section-eyebrow">Services</div>
+    <h2 class="section-title">What I <em>Deliver</em></h2>
+  </div>
+
+  <div class="services-grid">
+    <div class="service-card reveal">
+      <div class="service-num">01</div>
+      <div class="service-icon">
+        <svg width="32" height="32" viewBox="0 0 32 32" fill="none"><rect x="2" y="5" width="28" height="22" rx="3" stroke="#c9a96e" stroke-width="1.2"/><circle cx="16" cy="16" r="6" stroke="#c9a96e" stroke-width="1.2"/><circle cx="16" cy="16" r="2" fill="#c9a96e" opacity="0.4"/><path d="M2 10 L30 10" stroke="#c9a96e" stroke-width="0.6" opacity="0.4"/><circle cx="7" cy="7.5" r="1.5" fill="#c9a96e" opacity="0.5"/></svg>
+      </div>
+      <h3>Event Photography</h3>
+      <p>Complete coverage of college events, ceremonies, competitions, and personal celebrations. Every frame tells the story of your day.</p>
+      <div class="service-tags"><span class="service-tag">Portraits</span><span class="service-tag">Events</span><span class="service-tag">Street</span></div>
+    </div>
+    <div class="service-card reveal reveal-delay-1">
+      <div class="service-num">02</div>
+      <div class="service-icon">
+        <svg width="32" height="32" viewBox="0 0 32 32" fill="none"><rect x="2" y="6" width="20" height="20" rx="2" stroke="#c9a96e" stroke-width="1.2"/><path d="M22 11 L30 7 L30 25 L22 21" stroke="#c9a96e" stroke-width="1.2" fill="none"/><polygon points="9,12 9,20 17,16" stroke="#c9a96e" stroke-width="1" fill="#c9a96e" opacity="0.2"/></svg>
+      </div>
+      <h3>Cinematic Videos & Reels</h3>
+      <p>High-impact cinematic reels, short films, brand commercials, and Instagram/YouTube content that stops the scroll and holds attention.</p>
+      <div class="service-tags"><span class="service-tag">Reels</span><span class="service-tag">Short Films</span><span class="service-tag">Commercial</span></div>
+    </div>
+    <div class="service-card reveal reveal-delay-2">
+      <div class="service-num">03</div>
+      <div class="service-icon">
+        <svg width="32" height="32" viewBox="0 0 32 32" fill="none"><path d="M26 4 L28 6 L8 26 L4 28 L6 24 Z" stroke="#c9a96e" stroke-width="1.2" fill="none"/><path d="M22 8 L24 10" stroke="#c9a96e" stroke-width="1.2"/><circle cx="16" cy="16" r="8" stroke="#c9a96e" stroke-width="0.5" stroke-dasharray="2 2" opacity="0.3"/></svg>
+      </div>
+      <h3>Custom Artwork & Drawing</h3>
+      <p>Commissioned portraits, sketches, digital illustrations, and custom artworks for personal gifting, branding, or décor.</p>
+      <div class="service-tags"><span class="service-tag">Portraits</span><span class="service-tag">Digital</span><span class="service-tag">Traditional</span></div>
+    </div>
+    <div class="service-card reveal reveal-delay-3">
+      <div class="service-num">04</div>
+      <div class="service-icon">
+        <svg width="32" height="32" viewBox="0 0 32 32" fill="none"><rect x="7" y="3" width="18" height="26" rx="3" stroke="#c9a96e" stroke-width="1.2"/><rect x="11" y="9" width="10" height="8" rx="1" stroke="#c9a96e" stroke-width="0.8"/><line x1="11" y1="20" x2="21" y2="20" stroke="#c9a96e" stroke-width="0.8"/><line x1="11" y1="23" x2="18" y2="23" stroke="#c9a96e" stroke-width="0.8"/></svg>
+      </div>
+      <h3>Social Media Management</h3>
+      <p>End-to-end management of Instagram, YouTube, and digital channels — content creation, scheduling, strategy, and analytics.</p>
+      <div class="service-tags"><span class="service-tag">Instagram</span><span class="service-tag">YouTube</span><span class="service-tag">Strategy</span></div>
+    </div>
+  </div>
+</section>
+
+<!-- ── CONTACT ── -->
+<section id="contact" class="section">
+  <div class="contact-grid">
+    <div class="contact-info">
+      <div class="section-eyebrow reveal">Get In Touch</div>
+      <h2 class="section-title reveal reveal-delay-1">Let's Create<br/><em>Something Great</em></h2>
+      <div class="divider reveal reveal-delay-2"></div>
+      <p class="reveal reveal-delay-2">Have a project in mind? Whether it's an event shoot, a cinematic reel, a custom artwork, or ongoing social media support — send over the details and I'll get back to you within 24 hours.</p>
+
+      <div class="contact-detail reveal reveal-delay-3">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#c9a96e" stroke-width="1.5"><path d="M22 16.92v3a2 2 0 01-2.18 2 19.79 19.79 0 01-8.63-3.07A19.5 19.5 0 013.07 9.81 19.79 19.79 0 01.0 1.18C.0.63 .43.17 1.06.0h3a2 2 0 012 1.72c.13 1 .36 1.97.71 2.91a2 2 0 01-.45 2.11L5.09 7.91a16 16 0 006 6l1.17-1.17a2 2 0 012.11-.45c.94.35 1.91.58 2.91.71A2 2 0 0122 14.92z"/></svg>
+        <div>
+          <strong>Phone & WhatsApp</strong>
+          <a href="tel:7983564991">+91 79835 64991</a>
+        </div>
+      </div>
+
+      <div class="contact-detail reveal reveal-delay-3">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#c9a96e" stroke-width="1.5"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><polyline points="22,6 12,13 2,6"/></svg>
+        <div>
+          <strong>Email</strong>
+          <a href="mailto:sangamkumar.work@gmail.com">sangamkumar.work@gmail.com</a>
+        </div>
+      </div>
+
+      <div class="contact-detail reveal reveal-delay-4">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#c9a96e" stroke-width="1.5"><path d="M21 10c0 7-9 13-9 13S3 17 3 10a9 9 0 0118 0z"/><circle cx="12" cy="10" r="3"/></svg>
+        <div>
+          <strong>Location</strong>
+          <a>Muzaffarnagar, Uttar Pradesh, India</a>
+        </div>
+      </div>
+
+      <a href="https://wa.me/917983564991?text=Hi%20Sangam%2C%20I%27d%20like%20to%20discuss%20a%20project%20with%20you!" target="_blank" class="whatsapp-btn reveal">
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/></svg>
+        Chat on WhatsApp
+      </a>
+    </div>
+
+    <!-- FORM -->
+    <div class="contact-form reveal reveal-delay-2">
+      <div class="form-title">Send an Inquiry</div>
+      <form id="contactForm" onsubmit="handleSubmit(event)">
+        <div class="form-row">
+          <div class="form-group">
+            <label class="form-label">Full Name *</label>
+            <input type="text" class="form-control" placeholder="Your name" required/>
+          </div>
+          <div class="form-group">
+            <label class="form-label">Email Address *</label>
+            <input type="email" class="form-control" placeholder="your@email.com" required/>
+          </div>
+        </div>
+        <div class="form-row">
+          <div class="form-group">
+            <label class="form-label">Phone Number</label>
+            <input type="tel" class="form-control" placeholder="+91 XXXXX XXXXX"/>
+          </div>
+          <div class="form-group">
+            <label class="form-label">Service Required *</label>
+            <select class="form-control" required>
+              <option value="">Select a service…</option>
+              <option>Event Photography</option>
+              <option>Portrait Session</option>
+              <option>Cinematic Reel / Video</option>
+              <option>Short Film Production</option>
+              <option>Commercial Video</option>
+              <option>Custom Artwork / Drawing</option>
+              <option>Social Media Management</option>
+              <option>Full Project Package</option>
+            </select>
+          </div>
+        </div>
+        <div class="form-group">
+          <label class="form-label">Project Details *</label>
+          <textarea class="form-control" placeholder="Describe your project — date, location, deliverables, budget, and anything else that helps me understand your vision…" required rows="5"></textarea>
+        </div>
+        <button type="submit" class="form-submit">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="22" y1="2" x2="11" y2="13"/><polygon points="22 2 15 22 11 13 2 9 22 2"/></svg>
+          Send Inquiry to Sangam
+        </button>
+        <p class="form-note">Your inquiry will be sent to sangamkumar.work@gmail.com — response within 24 hours.</p>
+      </form>
+      <div class="form-success" id="formSuccess">
+        ✓ Inquiry sent successfully! Sangam will respond within 24 hours.
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ── FOOTER ── -->
+<footer>
+  <div class="footer-inner">
+    <div class="footer-brand">
+      <div class="brand-name">Sangam Kumar</div>
+      <p>Photographer · Videographer · Visual Artist · Social Media Manager. Based in Muzaffarnagar, UP.</p>
+    </div>
+    <div class="footer-col">
+      <h4>Services</h4>
+      <ul>
+        <li><a href="#services">Event Photography</a></li>
+        <li><a href="#services">Cinematic Reels</a></li>
+        <li><a href="#services">Custom Artwork</a></li>
+        <li><a href="#services">Social Media Mgmt</a></li>
+      </ul>
+    </div>
+    <div class="footer-col">
+      <h4>Social</h4>
+      <ul>
+        <li><a href="https://www.instagram.com/photography_sang91/" target="_blank">@photography_sang91</a></li>
+        <li><a href="https://www.instagram.com/sangam_arts91/" target="_blank">@sangam_arts91</a></li>
+        <li><a href="https://www.instagram.com/sam_cinematic500/" target="_blank">@sam_cinematic500</a></li>
+        <li><a href="https://www.youtube.com/channel/UC7FCWFint2FsZdB9u-MiMUQ" target="_blank">YouTube Channel</a></li>
+      </ul>
+    </div>
+  </div>
+  <div class="footer-bottom">
+    <p>© 2026 Sangam Kumar. All Rights Reserved.</p>
+    <div style="display:flex;gap:1.5rem;flex-wrap:wrap;align-items:center;">
+      <a href="tel:7983564991" style="font-size:0.78rem;color:var(--muted);transition:color 0.2s;" onmouseover="this.style.color='var(--gold)'" onmouseout="this.style.color='var(--muted)'">
+        📞 +91 79835 64991
+      </a>
+      <a href="https://wa.me/917983564991" target="_blank" style="font-size:0.78rem;color:var(--muted);transition:color 0.2s;" onmouseover="this.style.color='#25d366'" onmouseout="this.style.color='var(--muted)'">
+        💬 WhatsApp
+      </a>
+    </div>
+  </div>
+</footer>
+
+<!-- ── LIGHTBOX ── -->
+<div id="lightbox" onclick="closeLightboxOnOverlay(event)">
+  <div class="lb-content" id="lbContent">
+    <button class="lb-close" onclick="closeLightbox()">×</button>
+    <div class="lb-placeholder" id="lbPlaceholder">
+      <svg width="64" height="64" viewBox="0 0 64 64" fill="none"><rect x="4" y="4" width="56" height="56" rx="4" stroke="#c9a96e" stroke-width="1.2"/><circle cx="32" cy="32" r="16" stroke="#c9a96e" stroke-width="1.2"/><circle cx="32" cy="32" r="6" fill="#c9a96e" opacity="0.2"/></svg>
+      <div class="lb-title" id="lbTitle">Portfolio Item</div>
+      <div class="lb-cat" id="lbCat">Category</div>
+    </div>
+    <div class="lb-nav">
+      <button onclick="lbPrev()">← Prev</button>
+      <button onclick="closeLightbox()">Close</button>
+      <button onclick="lbNext()">Next →</button>
+    </div>
+  </div>
+</div>
+
+<script>
+// ── HERO SLIDESHOW ──
+let currentSlide = 0;
+const slides = document.querySelectorAll('.hero-slide');
+const dots = document.querySelectorAll('.hero-dot');
+
+function goToSlide(n) {
+  slides[currentSlide].classList.remove('active');
+  dots[currentSlide].classList.remove('active');
+  currentSlide = (n + slides.length) % slides.length;
+  slides[currentSlide].classList.add('active');
+  dots[currentSlide].classList.add('active');
+}
+
+let slideTimer = setInterval(() => goToSlide(currentSlide + 1), 4500);
+
+document.querySelectorAll('.hero-dot').forEach((d, i) => {
+  d.addEventListener('click', () => {
+    clearInterval(slideTimer);
+    goToSlide(i);
+    slideTimer = setInterval(() => goToSlide(currentSlide + 1), 4500);
+  });
+});
+
+// ── NAV SCROLL ──
+window.addEventListener('scroll', () => {
+  document.getElementById('nav').classList.toggle('scrolled', window.scrollY > 60);
+});
+
+// ── MOBILE MENU ──
+function openMenu() { document.getElementById('mobileMenu').classList.add('open'); }
+function closeMenu() { document.getElementById('mobileMenu').classList.remove('open'); }
+
+// ── PORTFOLIO DATA ──
+// Asset source paths live only here. To wire up real media, set each item's
+// `src` to the file path and add an <img>/<video> inside render() below —
+// none of this is printed to the page.
+const portfolioData = {
+  photography: [
+    { size: 'tall', grad: 'grad-p1', cat: 'portraits', title: 'Portrait Study I',        sub: 'Portraits', src: 'assets/work/photography/portrait-01.jpg', icon: 'face' },
+    { size: '',     grad: 'grad-p2', cat: 'events',     title: 'SRGC Annual Ceremony',    sub: 'Events',    src: 'assets/work/photography/event-01.jpg',     icon: 'camera' },
+    { size: '',     grad: 'grad-p3', cat: 'street',     title: 'City Frames',             sub: 'Street',    src: 'assets/work/photography/street-01.jpg',    icon: 'street' },
+    { size: 'wide', grad: 'grad-p4', cat: 'creative',   title: 'Creative Concept Shoot',  sub: 'Creative',  src: 'assets/work/photography/creative-01.jpg',  icon: 'prism' },
+    { size: '',     grad: 'grad-p5', cat: 'portraits',  title: 'Natural Light Portrait',  sub: 'Portraits', src: 'assets/work/photography/portrait-02.jpg',  icon: 'face' },
+    { size: 'tall', grad: 'grad-p6', cat: 'events',     title: 'College Fest Coverage',   sub: 'Events',    src: 'assets/work/photography/event-02.jpg',     icon: 'camera' }
+  ],
+  videography: [
+    { size: 'wide', grad: 'grad-v1', cat: 'reels',      title: 'Cinematic College Reel',  sub: '▶ Cinematic Reels', src: 'assets/work/videography/reel-01.mp4',       icon: 'play-wide' },
+    { size: 'tall', grad: 'grad-v2', cat: 'films',      title: 'Short Film — Silhouettes',sub: '▶ Short Films',     src: 'assets/work/videography/film-01.mp4',       icon: 'film' },
+    { size: '',     grad: 'grad-v3', cat: 'commercial', title: 'Brand Commercial',        sub: '▶ Commercial',      src: 'assets/work/videography/commercial-01.mp4', icon: 'play-round' },
+    { size: '',     grad: 'grad-v1', cat: 'reels',      title: 'SRGC Instagram Reel',     sub: '▶ Cinematic Reels', src: 'assets/work/videography/reel-02.mp4',       icon: 'play-vertical' }
+  ],
+  art: [
+    { size: 'tall', grad: 'grad-a1', cat: 'sketches',    title: 'Pencil Portrait Study',   sub: 'Sketches',    src: 'assets/work/art/sketch-01.jpg',     icon: 'pencil' },
+    { size: '',     grad: 'grad-a2', cat: 'digital',     title: 'Digital Artwork I',       sub: 'Digital Art', src: 'assets/work/art/digital-01.jpg',    icon: 'layers' },
+    { size: '',     grad: 'grad-a3', cat: 'traditional', title: 'Watercolour Landscape',   sub: 'Traditional', src: 'assets/work/art/traditional-01.jpg',icon: 'palette' },
+    { size: 'wide', grad: 'grad-a1', cat: 'sketches',    title: 'Charcoal Expressions',    sub: 'Sketches',    src: 'assets/work/art/sketch-02.jpg',     icon: 'wave' }
+  ]
+};
+
+const portfolioIcons = {
+  face: '<circle cx="24" cy="20" r="8" stroke="#c9a96e" stroke-width="1.2"/><path d="M8 40 Q24 28 40 40" stroke="#c9a96e" stroke-width="1.2" fill="none"/><rect x="2" y="2" width="44" height="44" rx="3" stroke="#c9a96e" stroke-width="1"/>',
+  camera: '<rect x="4" y="10" width="40" height="30" rx="3" stroke="#c9a96e" stroke-width="1.2"/><circle cx="24" cy="24" r="8" stroke="#c9a96e" stroke-width="1.2"/><path d="M16 10 L20 4 L28 4 L32 10" stroke="#c9a96e" stroke-width="1" fill="none"/>',
+  street: '<path d="M4 36 L16 20 L28 30 L36 22 L44 36" stroke="#c9a96e" stroke-width="1.2" fill="none"/><circle cx="36" cy="14" r="5" stroke="#c9a96e" stroke-width="1.2"/>',
+  prism: '<path d="M24 4 L44 44 L4 44 Z" stroke="#c9a96e" stroke-width="1.2" fill="none"/><circle cx="24" cy="28" r="8" stroke="#c9a96e" stroke-width="1.2"/>',
+  'play-wide': '<rect x="4" y="8" width="48" height="40" rx="3" stroke="#c9a96e" stroke-width="1.2"/><polygon points="22,20 22,36 38,28" stroke="#c9a96e" stroke-width="1.2" fill="#c9a96e" opacity="0.2"/><rect x="4" y="10" width="8" height="6" fill="#c9a96e" opacity="0.2"/><rect x="15" y="10" width="8" height="6" fill="#c9a96e" opacity="0.2"/>',
+  film: '<rect x="4" y="6" width="40" height="36" rx="2" stroke="#c9a96e" stroke-width="1.2"/><path d="M4 14 L44 14" stroke="#c9a96e" stroke-width="0.8" opacity="0.5"/><path d="M4 34 L44 34" stroke="#c9a96e" stroke-width="0.8" opacity="0.5"/><polygon points="19,18 19,30 31,24" stroke="#c9a96e" stroke-width="1.2" fill="#c9a96e" opacity="0.2"/>',
+  'play-round': '<circle cx="24" cy="24" r="18" stroke="#c9a96e" stroke-width="1.2"/><polygon points="19,17 19,31 33,24" stroke="#c9a96e" stroke-width="1.2" fill="#c9a96e" opacity="0.2"/>',
+  'play-vertical': '<rect x="12" y="4" width="24" height="40" rx="4" stroke="#c9a96e" stroke-width="1.2"/><polygon points="20,18 20,30 32,24" stroke="#c9a96e" stroke-width="1.2" fill="#c9a96e" opacity="0.2"/>',
+  pencil: '<path d="M36 6 L42 12 L16 38 L8 40 L10 32 Z" stroke="#c9a96e" stroke-width="1.2" fill="none"/><path d="M30 12 L36 18" stroke="#c9a96e" stroke-width="1" opacity="0.6"/><circle cx="24" cy="24" r="14" stroke="#c9a96e" stroke-width="0.5" opacity="0.2" stroke-dasharray="3 3"/>',
+  layers: '<rect x="6" y="6" width="36" height="36" rx="2" stroke="#c9a96e" stroke-width="1.2"/><circle cx="18" cy="18" r="5" stroke="#c9a96e" stroke-width="1"/><path d="M6 30 L18 22 L28 30 L36 24 L42 30" stroke="#c9a96e" stroke-width="1.2" fill="none"/>',
+  palette: '<path d="M4 34 Q12 24 20 28 Q28 32 36 20 Q40 14 44 18" stroke="#c9a96e" stroke-width="1.2" fill="none"/><path d="M4 42 Q16 36 28 40 Q36 42 44 38" stroke="#c9a96e" stroke-width="1" fill="none" opacity="0.5"/><circle cx="34" cy="10" r="5" stroke="#c9a96e" stroke-width="1.2"/>',
+  wave: '<path d="M12 36 Q20 10 28 24 Q36 38 44 12" stroke="#c9a96e" stroke-width="1.5" fill="none"/><circle cx="12" cy="36" r="3" fill="#c9a96e" opacity="0.4"/><circle cx="28" cy="24" r="3" fill="#c9a96e" opacity="0.4"/><circle cx="44" cy="12" r="3" fill="#c9a96e" opacity="0.4"/>'
+};
+
+function renderPortfolioGrid(key) {
+  const grid = document.getElementById('grid-' + key);
+  if (!grid) return;
+  const items = portfolioData[key];
+  grid.innerHTML = items.map((it, i) => {
+    const sizeClass = it.size ? ' ' + it.size : '';
+    const iconSize = it.size === 'wide' ? 56 : (it.size === 'tall' ? 48 : 40);
+    return `
+      <div class="p-item${sizeClass} ${it.grad}" data-cat="${it.cat}" data-title="${it.title}" data-sub="${it.sub}" data-grad="${it.grad}" data-index="${i}" onclick="openLightbox(this)">
+        <div class="p-item-inner ${it.grad}">
+          <div class="p-placeholder">
+            <svg class="p-icon" width="${iconSize}" height="${iconSize}" viewBox="0 0 48 48" fill="none">${portfolioIcons[it.icon] || ''}</svg>
+          </div>
+        </div>
+        <div class="p-item-overlay"><h4>${it.title}</h4><span>${it.sub}</span></div>
+      </div>`;
+  }).join('');
+}
+
+Object.keys(portfolioData).forEach(renderPortfolioGrid);
+
+// ── PORTFOLIO TABS ──
+function switchTab(panel, btn) {
+  document.querySelectorAll('.portfolio-panel').forEach(p => p.classList.remove('active'));
+  document.querySelectorAll('.ptab').forEach(b => b.classList.remove('active'));
+  document.getElementById('panel-' + panel).classList.add('active');
+  btn.classList.add('active');
+}
+
+// ── PORTFOLIO FILTER ──
+function filterItems(btn, grid, cat) {
+  const panel = document.getElementById('panel-' + grid);
+  panel.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
+  btn.classList.add('active');
+  const items = document.getElementById('grid-' + grid).querySelectorAll('.p-item');
+  items.forEach(item => {
+    if (cat === 'all' || item.dataset.cat === cat) {
+      item.style.display = '';
+      item.style.animation = 'none';
+      requestAnimationFrame(() => { item.style.animation = ''; });
+    } else {
+      item.style.display = 'none';
+    }
+  });
+}
+
+// ── LIGHTBOX ──
+let lbItems = [];
+let lbIndex = 0;
+
+function buildLbItems() {
+  const activePanel = document.querySelector('.portfolio-panel.active');
+  lbItems = Array.from(activePanel.querySelectorAll('.p-item'));
+}
+
+function openLightbox(el) {
+  buildLbItems();
+  lbIndex = lbItems.indexOf(el);
+  showLbItem(lbIndex);
+  document.getElementById('lightbox').classList.add('open');
+  document.body.style.overflow = 'hidden';
+}
+
+function showLbItem(idx) {
+  const item = lbItems[idx];
+  if (!item) return;
+  document.getElementById('lbTitle').textContent = item.dataset.title || 'Portfolio Item';
+  document.getElementById('lbCat').textContent = item.dataset.sub || '';
+  // Update placeholder gradient to match item
+  const placeholder = document.getElementById('lbPlaceholder');
+  placeholder.className = 'lb-placeholder ' + (item.dataset.grad || '');
+}
+
+function closeLightbox() {
+  document.getElementById('lightbox').classList.remove('open');
+  document.body.style.overflow = '';
+}
+
+function closeLightboxOnOverlay(e) {
+  if (e.target === document.getElementById('lightbox')) closeLightbox();
+}
+
+function lbNext() { lbIndex = (lbIndex + 1) % lbItems.length; showLbItem(lbIndex); }
+function lbPrev() { lbIndex = (lbIndex - 1 + lbItems.length) % lbItems.length; showLbItem(lbIndex); }
+
+document.addEventListener('keydown', e => {
+  if (!document.getElementById('lightbox').classList.contains('open')) return;
+  if (e.key === 'Escape') closeLightbox();
+  if (e.key === 'ArrowRight') lbNext();
+  if (e.key === 'ArrowLeft') lbPrev();
+});
+
+// ── CONTACT FORM ──
+function handleSubmit(e) {
+  e.preventDefault();
+  const form = document.getElementById('contactForm');
+  const btn = form.querySelector('.form-submit');
+  btn.textContent = 'Sending…';
+  btn.disabled = true;
+  // Simulate form send (replace with FormSpree/EmailJS/backend endpoint)
+  setTimeout(() => {
+    form.style.display = 'none';
+    document.getElementById('formSuccess').style.display = 'block';
+  }, 1000);
+}
+
+// ── SCROLL REVEAL ──
+const revealObserver = new IntersectionObserver((entries) => {
+  entries.forEach(entry => {
+    if (entry.isIntersecting) {
+      entry.target.classList.add('visible');
+    }
+  });
+}, { threshold: 0.12 });
+
+document.querySelectorAll('.reveal').forEach(el => revealObserver.observe(el));
+</script>
+</body>
+</html>
